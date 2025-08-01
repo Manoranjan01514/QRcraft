@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Stylish QR Code Generator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(135deg, #74ebd5, #9face6);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px;
+      color: #333;
+    }
+    #logo{
+      height: 50px;
+      width: 50px;
+      border-radius: 20px;
+      margin-top: 10px;
+      border: solid black;
+    }
+    #logo-container{
+      display: flex;
+      gap: 10px;
+      padding-right: 80px;
+    }
+    
+    h1 {
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 1px 1px 2px #00000040;
+    }
+    textarea {
+      width: 100%;
+      max-width: 400px;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      margin: 10px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    button {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      border: none;
+      color: white;
+      padding: 12px 20px;
+      margin: 10px;
+      font-size: 16px;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    button:hover {
+      transform: scale(1.05);
+      background: linear-gradient(to right, #764ba2, #667eea);
+    }
+    #canvas {
+      margin-top: 20px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 10px;
+    }
+    #downloadBtn {
+      display: none;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="logo-container"><img id="logo" src="https://uploads.onecompiler.io/43rhfhnra/43rum92ee/file_000000009c2861f78d9b5d315afc8912.png"> <h1>QRcraft</h1></div>
+
+  <!-- Text Input Only -->
+  <textarea id="text" rows="3" placeholder="Enter text or URL here..."></textarea>
+
+  <button onclick="generateQR()">Generate QR Code</button>
+  <canvas id="canvas"></canvas>
+  <a id="downloadBtn" download="qrcode.png"><button>Download QR Code</button></a>
+
+
+  <!-- QR Code Library -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <script>
+    function generateQR() {
+      const text = document.getElementById("text").value.trim();
+      const canvas = document.getElementById("canvas");
+      const downloadBtn = document.getElementById("downloadBtn");
+
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      downloadBtn.style.display = "none";
+
+      if (!text) {
+        alert("Please enter text or URL.");
+        return;
+      }
+
+      QRCode.toCanvas(canvas, text, { errorCorrectionLevel: 'H' }, function (err) {
+        if (err) {
+          alert("Error generating QR from text.");
+          console.error(err);
+          return;
+        }
+        canvas.toBlob(blob => {
+          const url = URL.createObjectURL(blob);
+          downloadBtn.href = url;
+          downloadBtn.style.display = 'inline-block';
+        });
+      });
+    }
+  </script>
+  
+</body>
+  <p>
+    &copy;2025 QRcraft | All right reserved.
+  </p>
+
+</html>
